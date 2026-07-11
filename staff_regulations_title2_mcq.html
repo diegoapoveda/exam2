@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Staff Regulations · Title II · EPSO-style MCQ · Hard mode</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --blue-0:#081634;
+    --blue-1:#0c2150;
+    --blue-line:rgba(255,255,255,.12);
+    --ivory:#FAF7EF;
+    --ivory-2:#EFE9DA;
+    --gold:#FFCC00;
+    --gold-soft:#F6D873;
+    --gold-deep:#C99700;
+    --ink:#14203c;
+    --known:#3FB984;
+    --known-deep:#2c9a6b;
+    --wrong:#C4453A;
+    --shadow:0 24px 60px -24px rgba(0,0,0,.7);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:"Inter",system-ui,sans-serif;
+    color:#eef2fb;
+    background:
+      radial-gradient(1200px 700px at 80% -10%, #1a3a82 0%, transparent 55%),
+      radial-gradient(900px 600px at -10% 110%, #0e2a66 0%, transparent 50%),
+      linear-gradient(160deg, var(--blue-1) 0%, var(--blue-0) 100%);
+    background-attachment:fixed;
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:680px;margin:0 auto;padding:24px 18px 64px}
+
+  /* ---------- Masthead ---------- */
+  .mast{display:flex;align-items:center;gap:14px;padding:8px 2px 22px}
+  .mast .ring-mini{flex:0 0 auto}
+  .mast h1{font-family:"Newsreader",serif;font-weight:500;font-size:1.42rem;line-height:1.1;margin:0;color:#fff}
+  .mast .sub{margin:3px 0 0;font-size:.78rem;color:#9fb0d6;letter-spacing:.3px}
+  .mast .sub b{color:var(--gold-soft);font-weight:600}
+
+  /* ---------- Star ring ---------- */
+  .ring{position:relative;display:inline-block}
+  .ring .star{
+    position:absolute;top:50%;left:50%;transform-origin:center;
+    color:rgba(255,255,255,.16);line-height:1;pointer-events:none;
+    transition:color .45s ease, text-shadow .45s ease;
+  }
+  .ring .star.lit{color:var(--gold);text-shadow:0 0 8px rgba(255,204,0,.55)}
+  .ring .center{
+    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    text-align:center;font-family:"Inter";font-weight:700;color:#fff;line-height:1;
+  }
+
+  /* ---------- Home ---------- */
+  .intro{
+    background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+    border:1px solid var(--blue-line);border-radius:16px;padding:16px 18px;margin-bottom:22px;
+  }
+  .intro p{margin:0;font-size:.9rem;line-height:1.55;color:#c9d4ee}
+  .intro .how{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .chip{font-size:.72rem;color:#0a1c44;background:var(--gold-soft);padding:4px 10px;border-radius:999px;font-weight:600}
+  .chip.ghost{background:transparent;color:#9fb0d6;border:1px solid var(--blue-line);font-weight:500}
+
+  .secthead{display:flex;align-items:baseline;justify-content:space-between;margin:0 4px 12px}
+  .secthead .eyebrow{font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;color:#8aa0cf}
+  .secthead .tally{font-size:.78rem;color:#aebbdc}
+
+  .mods{display:flex;flex-direction:column;gap:12px}
+  .mod{
+    width:100%;text-align:left;cursor:pointer;display:flex;align-items:center;gap:16px;
+    background:linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.02));
+    border:1px solid var(--blue-line);border-radius:16px;padding:15px 16px;
+    color:inherit;font-family:inherit;
+    transition:transform .15s ease, border-color .2s ease;
+  }
+  .mod:hover{transform:translateY(-2px);border-color:rgba(255,204,0,.35)}
+  .mod:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+  .mod .num{font-family:"Newsreader",serif;font-size:1.5rem;color:var(--gold-soft);width:30px;flex:0 0 auto;text-align:center}
+  .mod .body{flex:1 1 auto;min-width:0}
+  .mod .title{font-family:"Newsreader",serif;font-size:1.06rem;color:#fff;margin:0 0 2px;font-weight:500}
+  .mod .blurb{font-size:.78rem;color:#a9b6d8;margin:0;line-height:1.4}
+  .mod .barwrap{margin-top:9px;height:5px;border-radius:99px;background:rgba(255,255,255,.1);overflow:hidden}
+  .mod .bar{height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,var(--gold),var(--gold-soft));transition:width .5s ease}
+  .mod .bar.done{background:linear-gradient(90deg,var(--known),#6fe0ab)}
+  .mod .ring-wrap{flex:0 0 auto}
+
+  .toolbar{display:flex;gap:10px;margin-top:22px;justify-content:center;flex-wrap:wrap}
+  .tbtn{
+    font-family:inherit;font-size:.8rem;color:#bcc8e6;background:transparent;
+    border:1px solid var(--blue-line);border-radius:999px;padding:8px 16px;cursor:pointer;
+    transition:border-color .2s ease,color .2s ease;
+  }
+  .tbtn:hover{border-color:rgba(255,204,0,.4);color:#fff}
+  .tbtn:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+
+  /* ---------- Study ---------- */
+  .study{display:none}
+  .study.active{display:block}
+  .home.hidden{display:none}
+
+  .topbar{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+  .back{
+    font-family:inherit;cursor:pointer;color:#cdd8f2;background:transparent;border:none;
+    font-size:.86rem;display:inline-flex;align-items:center;gap:6px;padding:6px 4px;
+  }
+  .back:hover{color:#fff}
+  .back:focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-radius:6px}
+  .topbar .deckname{font-family:"Newsreader",serif;font-size:1.04rem;color:#fff;flex:1 1 auto;min-width:0;font-weight:500}
+  .topbar .deckname span{display:block;font-family:"Inter";font-size:.72rem;color:#9fb0d6;font-weight:400}
+
+  .studyhead{display:flex;align-items:center;justify-content:center;gap:18px;margin-bottom:14px}
+  .studyhead .counter{font-size:.8rem;color:#aebbdc;letter-spacing:.04em}
+  .studyhead .counter b{color:#fff;font-weight:600}
+  .studyhead .score{font-size:.8rem;color:#8fd6b4}
+
+  .qcard{
+    background:linear-gradient(180deg,#15347c,#0e2358);
+    border:1px solid rgba(255,255,255,.14);
+    border-radius:22px;padding:24px 22px;box-shadow:var(--shadow);
+  }
+  .qcard .tag{font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;font-weight:600;color:var(--gold-soft);margin-bottom:12px}
+  .qcard .q{font-family:"Newsreader",serif;font-size:1.22rem;line-height:1.35;color:#fff;margin:0 0 18px}
+
+  .opts{display:flex;flex-direction:column;gap:10px}
+  .opt{
+    width:100%;text-align:left;cursor:pointer;font-family:inherit;
+    display:flex;gap:12px;align-items:flex-start;
+    background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.14);
+    border-radius:14px;padding:13px 14px;color:#e6ecfa;font-size:.9rem;line-height:1.45;
+    transition:border-color .15s ease, background .15s ease, opacity .2s ease;
+  }
+  .opt:hover:not(:disabled){border-color:rgba(255,204,0,.45);background:rgba(255,255,255,.08)}
+  .opt:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+  .opt:disabled{cursor:default}
+  .opt .letter{
+    flex:0 0 auto;width:24px;height:24px;border-radius:99px;margin-top:1px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:.72rem;font-weight:700;color:#0a1c44;background:var(--gold-soft);
+  }
+  .opt.correct{background:rgba(63,185,132,.18);border-color:var(--known);color:#eafff4}
+  .opt.correct .letter{background:var(--known);color:#fff}
+  .opt.wrong{background:rgba(196,69,58,.16);border-color:var(--wrong);color:#ffe9e6}
+  .opt.wrong .letter{background:var(--wrong);color:#fff}
+  .opt.dim{opacity:.45}
+
+  .explain{
+    display:none;margin-top:16px;border-radius:16px;padding:16px 18px;
+    background:linear-gradient(180deg,var(--ivory),var(--ivory-2));
+    border:1px solid rgba(20,32,60,.1);color:var(--ink);
+    font-size:.92rem;line-height:1.55;
+  }
+  .explain.show{display:block}
+  .explain .vh{font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;font-weight:700;margin:0 0 6px}
+  .explain.good .vh{color:var(--known-deep)}
+  .explain.bad .vh{color:var(--wrong)}
+  .explain p{margin:0}
+  .explain strong{font-weight:700}
+  .explain em{color:#4a577a}
+
+  .nav{display:flex;align-items:center;justify-content:space-between;margin-top:20px;gap:10px}
+  .nbtn{
+    font-family:inherit;font-size:.82rem;color:#cdd8f2;background:rgba(255,255,255,.06);
+    border:1px solid var(--blue-line);border-radius:999px;padding:9px 16px;cursor:pointer;
+    transition:border-color .2s,color .2s;
+  }
+  .nbtn:hover{border-color:rgba(255,204,0,.4);color:#fff}
+  .nbtn:disabled{opacity:.35;cursor:default}
+  .nbtn:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+  .nbtn.primary{background:linear-gradient(180deg,var(--gold),#e6b800);color:#0a1c44;font-weight:700;border:none;padding:10px 22px}
+
+  .filterrow{display:flex;justify-content:center;margin-top:16px}
+  .toggle{
+    font-family:inherit;font-size:.76rem;color:#9fb0d6;background:transparent;
+    border:1px solid var(--blue-line);border-radius:999px;padding:7px 14px;cursor:pointer;
+    display:inline-flex;align-items:center;gap:7px;transition:all .2s;
+  }
+  .toggle.on{background:rgba(255,204,0,.12);border-color:rgba(255,204,0,.5);color:#fff}
+  .toggle:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+  .dot{width:7px;height:7px;border-radius:99px;background:#6c748c}
+  .toggle.on .dot{background:var(--gold)}
+
+  .done-banner{
+    text-align:center;background:linear-gradient(180deg,rgba(63,185,132,.16),rgba(63,185,132,.06));
+    border:1px solid rgba(63,185,132,.4);border-radius:18px;padding:22px;margin-top:4px;display:none;
+  }
+  .done-banner.show{display:block}
+  .done-banner h3{font-family:"Newsreader",serif;font-weight:500;color:#fff;margin:8px 0 6px;font-size:1.2rem}
+  .done-banner p{margin:0;color:#bfe6d3;font-size:.86rem}
+
+  .foot{text-align:center;margin-top:30px;font-size:.74rem;color:#7e8db0;line-height:1.5}
+
+  @media (max-width:480px){
+    .wrap{padding:18px 14px 56px}
+    .qcard .q{font-size:1.1rem}
+    .mod .blurb{display:none}
+  }
+  @media (prefers-reduced-motion:reduce){ *{transition-duration:.001ms !important} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ============ HOME ============ -->
+  <section class="home" id="home">
+    <header class="mast">
+      <div class="ring-mini" id="mastRing"></div>
+      <div>
+        <h1>Staff Regulations — Title II</h1>
+        <p class="sub">Rights &amp; obligations of officials · <b>Hard mode</b> · Art 11–26a</p>
+      </div>
+    </header>
+
+    <div class="intro">
+      <p>Built from the Staff Regulations, Title II only, written the way EPSO writes them: four options that are <strong>almost identical</strong> — same sentence, one changed deadline, authority or verb (<em>consent</em> vs <em>consulting</em>). A correct first tap counts as mastered; a wrong one keeps the question in your review pool.</p>
+      <div class="how">
+        <span class="chip">Official exam style</span>
+        <span class="chip ghost">6 modules</span>
+        <span class="chip ghost">Options reshuffled each time</span>
+      </div>
+    </div>
+
+    <div class="secthead">
+      <span class="eyebrow">Rights and obligations of officials</span>
+      <span class="tally" id="globalTally">—</span>
+    </div>
+
+    <div class="mods" id="modList"></div>
+
+    <div class="toolbar">
+      <button class="tbtn" id="reviewAllBtn">Full mock (all modules, shuffled)</button>
+      <button class="tbtn" id="resetBtn">Reset progress</button>
+    </div>
+
+    <p class="foot">Train to spot the ONE word that changes between options:<br>the deadline (30 vs 60 days), the authority, the number of years.</p>
+  </section>
+
+  <!-- ============ STUDY ============ -->
+  <section class="study" id="study">
+    <div class="topbar">
+      <button class="back" id="backBtn">‹ Back</button>
+      <div class="deckname" id="deckName">—<span id="deckSub"></span></div>
+      <div class="ring-mini" id="deckRing"></div>
+    </div>
+
+    <div class="studyhead">
+      <span class="counter">Question <b id="cardPos">1</b> of <b id="cardTotal">1</b></span>
+      <span class="score" id="sessScore"></span>
+    </div>
+
+    <div class="qcard" id="qcard">
+      <div class="tag" id="frontTag">Module</div>
+      <p class="q" id="qText">—</p>
+      <div class="opts" id="opts"></div>
+      <div class="explain" id="explain">
+        <p class="vh" id="verdictHead">Correct</p>
+        <p id="expText">—</p>
+      </div>
+    </div>
+
+    <div class="nav">
+      <button class="nbtn" id="prevBtn">‹ Previous</button>
+      <button class="nbtn primary" id="nextBtn" style="visibility:hidden">Next ›</button>
+      <button class="nbtn" id="shuffleBtn">Shuffle</button>
+    </div>
+
+    <div class="filterrow">
+      <button class="toggle" id="missesToggle"><span class="dot"></span>Review only what I haven't mastered</button>
+    </div>
+
+    <div class="done-banner" id="doneBanner">
+      <div class="ring-mini" id="doneRing" style="margin:0 auto"></div>
+      <h3>Module mastered</h3>
+      <p>Every question answered correctly. Come back in a few days — spaced repetition is what makes it stick for exam day.</p>
+    </div>
+  </section>
+
+</div>
+
+<script>
+/* ============================ DATA ============================
+   Each question: q, opts (index 0 = correct; shuffled at render), exp
+================================================================ */
+const MODULES = [
+/* ==================== MODULE 1: LOYALTY & CONFLICTS ==================== */
+{ id:"m1", n:"1", name:"Loyalty & conflicts of interest", blurb:"Art 11–11a · gifts, the recruitment check, family and financial interests",
+  cards:[
+    {q:"Under Article 11, an official may accept an honour, decoration, favour, gift or payment from a source outside his institution:",
+     opts:["Only with the permission of the appointing authority — except for services rendered before his appointment or during special leave for military or other national service.",
+           "Only with the permission of his Director-General — except for services rendered before his appointment.",
+           "Never, under any circumstances, while in active employment.",
+           "Freely, provided its value does not exceed a threshold set by the appointing authority."],
+     exp:"The rule is <strong>permission of the APPOINTING AUTHORITY</strong>, with exactly two carve-outs: services rendered <strong>BEFORE appointment</strong> or <strong>during special leave for military or other national service</strong>. No value threshold appears in Article 11 — that option is invented."},
+    {q:"According to Article 11, when does the appointing authority examine whether a candidate has a conflict of interest?",
+     opts:["Before recruiting the official, on the basis of a specific form submitted by the candidate.",
+           "Within three months of the official taking up his duties.",
+           "Only if a third party raises an allegation of conflict of interest.",
+           "At the end of the probationary period, in the probation report."],
+     exp:"The check happens <strong>BEFORE recruitment</strong>: the candidate declares any actual or potential conflict <strong>using a specific form</strong>, and the appointing authority takes it into account in a <strong>duly reasoned opinion</strong>. The same rule applies <strong>by analogy to officials returning from leave on personal grounds</strong> — a favourite hidden detail."},
+    {q:"An official who, in the performance of his duties, is called on to deal with a matter in which he has a personal interest that could impair his independence must:",
+     opts:["Immediately inform the Appointing Authority, which shall take any appropriate measure and may relieve him of responsibility in the matter.",
+           "Immediately withdraw from the matter and notify his immediate superior within 30 working days.",
+           "Deal with the matter but declare the interest in writing afterwards.",
+           "Refer the matter to OLAF, which decides whether he may continue to handle it."],
+     exp:"Article 11a: <strong>inform the Appointing Authority immediately</strong>; the AA — not the official himself, not OLAF — <strong>takes the appropriate measure</strong> and may in particular <strong>relieve him from responsibility</strong> in the matter. 'Family and financial interests' are expressly named."},
+    {q:"Under Article 11a(3), an official may not keep or acquire, directly or indirectly:",
+     opts:["Any interest in undertakings subject to the authority of his institution, or having dealings with it, of such kind or magnitude as might impair his independence.",
+           "Any interest whatsoever in any undertaking established in the European Union.",
+           "Shares in any publicly listed company, unless declared to the appointing authority.",
+           "Any interest in undertakings subject to the authority of his institution, unless the interest is held indirectly."],
+     exp:"The prohibition is precisely scoped: undertakings <strong>subject to the authority of the institution or having dealings with it</strong>, AND only interests of a <strong>kind or magnitude that might impair independence</strong>. It is not a blanket ban on all shareholdings — and 'indirectly' is expressly covered, so option d) inverts the rule."},
+    {q:"Article 11 requires an official to carry out his duties solely with the interests of:",
+     opts:["The Union in mind, seeking and taking instructions from no government, authority, organisation or person outside his institution.",
+           "The Union in mind, seeking and taking instructions from no person outside the European institutions collectively.",
+           "His institution in mind, taking instructions only from his appointing authority.",
+           "The Union and his Member State in mind, in a spirit of loyal cooperation."],
+     exp:"<strong>Solely the interests of the UNION</strong>; no instructions from any government, authority, organisation or person <strong>outside his INSTITUTION</strong> — the reference point is the official's own institution, not the institutions collectively. Objectivity, impartiality and <strong>loyalty to the Union</strong> complete the trio."}
+  ]},
+
+/* ==================== MODULE 2: CONDUCT & OUTSIDE ACTIVITIES ==================== */
+{ id:"m2", n:"2", name:"Conduct, harassment & outside activities", blurb:"Art 12–13, 15 · the two harassment definitions · who consults the Joint Committee",
+  cards:[
+    {q:"Under Article 12a, 'psychological harassment' means improper conduct that:",
+     opts:["Takes place over a period, is repetitive or systematic, and involves intentional physical behaviour, language, gestures or other acts that may undermine the personality, dignity or physical or psychological integrity of a person.",
+           "Takes place on one or more occasions and involves physical behaviour, language or gestures that undermine the dignity of a person, whether intentional or not.",
+           "Takes place over a period, is repetitive or systematic, and involves acts that actually undermine the personality, dignity or integrity of a person.",
+           "Is directed against a subordinate by a hierarchical superior, over a period, with the purpose of undermining his dignity."],
+     exp:"Four cumulative elements: <strong>over a period · repetitive or systematic · INTENTIONAL acts · that MAY undermine</strong> personality, dignity or integrity. Option b) drops intent, option c) requires actual harm ('may' suffices), option d) invents a hierarchy requirement — harassment can come from anyone."},
+    {q:"Under Article 12a, sexual harassment shall be treated as:",
+     opts:["Discrimination based on gender.",
+           "A criminal offence under the law of the place of employment.",
+           "Serious misconduct within the meaning of Article 22.",
+           "Grounds for automatic removal from post."],
+     exp:"The exact classification: <strong>'discrimination based on gender'</strong>. Definition: conduct relating to sex, <strong>unwanted</strong> by the recipient, with the <strong>purpose or effect</strong> of offending or creating an intimidating, hostile, offensive or disturbing environment."},
+    {q:"An official who has given evidence on psychological or sexual harassment is protected from prejudicial effects:",
+     opts:["Provided the official has acted honestly.",
+           "Provided the official has acted reasonably and honestly.",
+           "Unconditionally, in all circumstances.",
+           "Provided the harassment is subsequently established by the Disciplinary Board."],
+     exp:"Article 12a(2) protects the witness <strong>'provided the official has acted HONESTLY'</strong> — honestly alone. The formula <strong>'reasonably AND honestly'</strong> belongs to the whistleblower in Article 22a(3). One word of difference between two protection clauses — textbook hard-mode material."},
+    {q:"Under Article 12b, an official wishing to engage in an outside activity must:",
+     opts:["First obtain the permission of the Appointing Authority, whether the activity is paid or unpaid; permission is refused only if the activity interferes with the performance of his duties or is incompatible with the interests of the institution.",
+           "First obtain the permission of the Appointing Authority, but only if the activity is paid; permission may be refused on any ground.",
+           "Simply notify the Appointing Authority, which may object within 30 working days.",
+           "First obtain the permission of his Director-General, refused only if the activity is incompatible with the interests of the institution."],
+     exp:"<strong>PRIOR permission, paid OR unpaid</strong> (and any assignment outside the Union), and refusal is possible <strong>ONLY on two grounds</strong>: interference with duties or incompatibility with the institution's interests. Changes to a permitted activity must be notified; permission may then be withdrawn. Notification-with-silent-approval is the Art 17a publication regime — not this one."},
+    {q:"If the employment of an official's spouse proves incompatible with the official's duties and the official cannot undertake that it will cease within a specified period, the appointing authority decides whether the official continues in his post or is transferred:",
+     opts:["After consulting the Joint Committee.",
+           "After consulting the Disciplinary Board.",
+           "After obtaining the opinion of the Staff Committee.",
+           "After consulting OLAF."],
+     exp:"Article 13: the spouse's gainful employment must be declared; in case of incompatibility the AA decides <strong>after consulting the JOINT COMMITTEE</strong> — the same body consulted under Article 16 for post-service activities. Disciplinary Board and Staff Committee are decoys from other parts of the Regulations."},
+    {q:"An official who intends to STAND for public office must notify the Appointing Authority, which may decide all of the following EXCEPT:",
+     opts:["Requiring the official to resign from the service.",
+           "Requiring the official to apply for leave on personal grounds.",
+           "Granting the official annual leave.",
+           "Authorising the official to discharge his duties part-time, or allowing him to continue as before."],
+     exp:"Article 15(1) offers exactly four outcomes: <strong>leave on personal grounds · annual leave · part-time · continue unchanged</strong>. Resignation is NOT among them. If <strong>elected</strong>, the leave or part-time arrangement <strong>corresponds to the term of office</strong>."},
+    {q:"An official ELECTED or appointed to public office must:",
+     opts:["Immediately inform the Appointing Authority, which takes one of the Article 15(1) decisions having regard to the interests of the service, the importance of the office, its duties and its remuneration.",
+           "Resign from the service within 30 working days of taking up the public office.",
+           "Automatically be placed on leave on personal grounds for the duration of the mandate.",
+           "Inform the Appointing Authority within 60 days, which may forbid him from taking up the office."],
+     exp:"<strong>Immediate information + AA decision</strong> weighing the service's interests, the office's importance, duties, and <strong>remuneration and expenses</strong>. Nothing is automatic, and the AA cannot forbid the office — it only arranges the official's status around it."},
+    {q:"Article 12 requires an official to refrain from:",
+     opts:["Any action or behaviour which might reflect adversely upon his position.",
+           "Any action or behaviour which reflects adversely upon the reputation of the Union.",
+           "Any public statement on matters of Union policy.",
+           "Any action which might reflect adversely upon his position, unless carried out in a private capacity."],
+     exp:"The exact words: <strong>'any action or behaviour which MIGHT reflect adversely upon his POSITION'</strong> — a possibility test tied to the official's position, with no private-capacity exemption. Short article, precise wording, easy to distort."}
+  ]},
+
+/* ==================== MODULE 3: LEAVING, EXPRESSION & IP ==================== */
+{ id:"m3", n:"3", name:"Leaving the service, expression & IP", blurb:"Art 16–19 · 2 years, 3 years, 12 months, 30 days · who owns the patent",
+  cards:[
+    {q:"Under Article 16, an official intending to engage in an occupational activity after leaving the service must inform his institution:",
+     opts:["If the activity is to begin within two years of leaving the service, using a specific form.",
+           "If the activity is to begin within three years of leaving the service, by registered letter.",
+           "If the activity is to begin within twelve months of leaving the service, using a specific form.",
+           "In all cases, for the rest of his life, where the activity relates to his former duties."],
+     exp:"The notification window is <strong>TWO years after leaving</strong>, via a <strong>specific form</strong>. The <strong>three years</strong> figure is the look-back: the test is whether the activity relates to work done in the <strong>last three years of service</strong>. Twelve months is the senior-official lobbying ban. Three numbers, one article."},
+    {q:"After being informed of a former official's planned activity, the appointing authority must notify its decision within:",
+     opts:["30 working days, after consulting the Joint Committee — silence constituting implicit acceptance.",
+           "30 calendar days, after consulting the Joint Committee — silence constituting refusal.",
+           "60 working days, after consulting the Staff Committee — silence constituting implicit acceptance.",
+           "15 working days — silence obliging the official to renew his request."],
+     exp:"<strong>30 WORKING days · Joint Committee consulted · no answer = IMPLICIT ACCEPTANCE</strong>. Every element gets swapped in the distractors: calendar days, the wrong committee, silence-as-refusal. The 60-day figure belongs to Article 22b."},
+    {q:"For former SENIOR officials, Article 16 provides that the appointing authority shall, in principle:",
+     opts:["Prohibit them, during the 12 months after leaving the service, from lobbying or advocacy vis-à-vis staff of their former institution on matters for which they were responsible during their last three years of service.",
+           "Prohibit them, during the 24 months after leaving the service, from any occupational activity related to their former duties.",
+           "Prohibit them, during the 12 months after leaving the service, from any contact with staff of any EU institution.",
+           "Require them to obtain OLAF clearance before any occupational activity for three years."],
+     exp:"The lobbying ban: <strong>12 months · vis-à-vis staff of the FORMER institution · matters of the last THREE years of responsibility</strong>. And each institution <strong>publishes annually</strong> information on its application, including a list of cases assessed."},
+    {q:"Under Article 17a, an official who intends to publish any matter dealing with the work of the Union must:",
+     opts:["Inform the Appointing Authority in advance; if the Authority does not notify a reasoned objection within 30 working days, it is deemed to have no objections.",
+           "Obtain the prior written permission of the Appointing Authority, refused only where the interests of the Union so require.",
+           "Inform the Appointing Authority in advance; publication may proceed only after express written approval within 60 days.",
+           "Submit the manuscript to the Appointing Authority, which may censor passages liable to prejudice the Union's interests."],
+     exp:"Publication is an <strong>information-plus-silence regime</strong>: inform in advance; the AA must show the matter is <strong>liable SERIOUSLY to prejudice the legitimate interests of the Union</strong> and object in writing <strong>within 30 working days — silence = no objection</strong>. Prior-permission regimes belong to Articles 12b (outside activities) and 19 (court testimony). Know which article uses which mechanism."},
+    {q:"Under Article 19, an official asked to disclose in legal proceedings information known to him by reason of his duties:",
+     opts:["Needs permission from the appointing authority, refused only where the interests of the Union so require and the refusal would not entail criminal consequences for the official.",
+           "Needs permission from the appointing authority, refused whenever the interests of the Union so require, irrespective of the consequences for the official.",
+           "May disclose it freely once he has left the service.",
+           "Needs permission from the President of the Court of Justice."],
+     exp:"Permission may be refused <strong>only</strong> if BOTH limbs hold: Union interests require it <strong>AND</strong> refusal entails <strong>no criminal consequences</strong> for the official. The duty continues <strong>after leaving the service</strong> — and there is an exception: <strong>evidence before the CJEU or a Disciplinary Board</strong> concerning a (former) servant of the Union."},
+    {q:"Under Article 18, an invention relating to the work of the Union made by an official is deemed to have been made in the course of his duties if made:",
+     opts:["During the year following the expiration of his term of duty, unless proved otherwise.",
+           "During the two years following the expiration of his term of duty, in all cases.",
+           "During the six months following the expiration of his term of duty, unless proved otherwise.",
+           "At any time after leaving the service, if it draws on knowledge acquired in the service."],
+     exp:"The presumption window is <strong>ONE year</strong> after leaving, and it is <strong>rebuttable</strong> ('unless proved otherwise'). Inventions in service are the <strong>undisputed property of the Union</strong>; the institution may patent them in all countries, the <strong>inventor's name is stated</strong>, and a <strong>bonus</strong> may be awarded."},
+    {q:"Under Article 17, the obligation not to disclose information received in the line of duty:",
+     opts:["Does not apply to information already made public or accessible to the public, and continues to bind the official after leaving the service.",
+           "Applies to all information without exception and lapses when the official leaves the service.",
+           "Applies only to information formally classified by the institution.",
+           "May be waived by the official's immediate superior."],
+     exp:"Two hinges: the carve-out for information <strong>already public or accessible to the public</strong>, and the duty's survival <strong>after leaving the service</strong>. No classification requirement, no superior's waiver — those are inventions."},
+    {q:"Rights in writings or other work done by an official in the performance of his duties belong to:",
+     opts:["The European Union where the work relates to its activities — or to the European Atomic Energy Community where it relates to Euratom activities — with the right to acquire the copyright compulsorily.",
+           "The official, subject to a non-exclusive licence in favour of the Union.",
+           "The institution employing the official, which shares royalties with the author.",
+           "The European Union in all cases, including private writings produced outside working hours."],
+     exp:"Article 18(1): property of the <strong>EU — or Euratom for Euratom-related work</strong> — including the right of <strong>compulsory copyright acquisition</strong>. The scope condition matters: work done <strong>in the performance of duties, relating to Union activities</strong> — not private writings."}
+  ]},
+
+/* ==================== MODULE 4: HIERARCHY, ORDERS & LIABILITY ==================== */
+{ id:"m4", n:"4", name:"Hierarchy, orders & liability", blurb:"Art 20–22 · the irregular-order ladder · when you pay the Union back",
+  cards:[
+    {q:"Under Article 21a, an official who receives an order he considers irregular and whose immediate superior confirms it must:",
+     opts:["Refer the question in writing to the hierarchical authority immediately above; if that authority confirms the order in writing, he shall carry it out unless it is manifestly illegal or breaches relevant safety standards.",
+           "Refuse to execute the order until the Appointing Authority has ruled on its legality.",
+           "Carry out the order immediately in all cases, reserving his position in writing.",
+           "Refer the question to the Disciplinary Board, which decides whether the order must be executed."],
+     exp:"The ladder: immediate superior (written question → written reply) → <strong>hierarchical authority immediately above, in writing</strong> → if confirmed in writing, <strong>execute — UNLESS manifestly illegal or contrary to safety standards</strong>. Those two exceptions are the only ones; there is no general right to suspend execution."},
+    {q:"If the immediate superior considers that a contested order must be executed promptly:",
+     opts:["The official shall carry it out unless it is manifestly illegal or breaches safety standards — and the superior is obliged, at the official's request, to give the order in writing.",
+           "The official may still refer the matter upwards before executing it.",
+           "The official shall carry it out in all circumstances, without exception.",
+           "The order lapses unless confirmed by the hierarchical authority above within 24 hours."],
+     exp:"In the urgency scenario the upward referral disappears — <strong>execute, subject to the same two exceptions</strong> (manifest illegality, safety standards), and the official may demand the order <strong>in writing</strong>. Article 21a(3) adds: reporting an irregular order shall bring <strong>no prejudice</strong>."},
+    {q:"Under Article 22, an official may be required to make good damage suffered by the Union:",
+     opts:["In whole or in part, in case of serious misconduct in the course of or in connection with his duties, by reasoned decision of the appointing authority under the disciplinary procedure — with the Court of Justice having unlimited jurisdiction in such disputes.",
+           "In whole, in case of any misconduct in the course of his duties, by decision of the Court of Justice.",
+           "In part only, in case of serious misconduct, by decision of the Disciplinary Board — subject to appeal to the appointing authority.",
+           "In whole or in part, in case of negligence of any degree, by reasoned decision of his Director-General."],
+     exp:"Requirements: <strong>SERIOUS misconduct</strong> (not any fault), <strong>whole or part</strong> of the damage, <strong>reasoned AA decision via the disciplinary procedure</strong>, and <strong>CJEU unlimited jurisdiction</strong>. Each distractor degrades one element."},
+    {q:"Article 20 obliges an official to:",
+     opts:["Reside either in the place where he is employed or at no greater distance as is compatible with the proper performance of his duties, and notify the Appointing Authority of his address and any change of it.",
+           "Reside in the place where he is employed, unless the Appointing Authority grants a derogation.",
+           "Reside within the Member State where he is employed and notify his immediate superior of his address.",
+           "Reside at no greater distance than 60 km from his place of employment."],
+     exp:"No fixed radius, no derogation procedure: the test is <strong>compatibility with the proper performance of duties</strong>, plus the duty to <strong>notify the AA of the address immediately upon any change</strong>."},
+    {q:"Under Article 21, an official in charge of a branch of the service:",
+     opts:["Is responsible to his superiors for the authority conferred on him and for the instructions he gives — and the responsibility of his subordinates in no way releases him from his own.",
+           "Transfers responsibility to his subordinates for the tasks he delegates to them.",
+           "Is responsible only for instructions he has confirmed in writing.",
+           "Shares responsibility equally with his subordinates for all acts of the unit."],
+     exp:"The chain of responsibility runs upward and does not dilute: <strong>subordinates' responsibility never releases the superior</strong>. And every official, whatever his rank, must <strong>assist and tender advice to his superiors</strong>."}
+  ]},
+
+/* ==================== MODULE 5: WHISTLEBLOWING ==================== */
+{ id:"m5", n:"5", name:"Whistleblowing (22a–22c)", blurb:"Who you may tell, in what order · 'reasonably and honestly' · the 60 days",
+  cards:[
+    {q:"Under Article 22a, an official who becomes aware of facts pointing to possible illegal activity detrimental to the Union's interests shall without delay inform:",
+     opts:["His immediate superior or his Director-General or, if he considers it useful, the Secretary-General or persons in equivalent positions, or OLAF direct — in writing.",
+           "His immediate superior only, who alone decides whether to pass the information to OLAF.",
+           "OLAF exclusively, bypassing his hierarchy in all cases.",
+           "The European Ombudsman or the President of his institution."],
+     exp:"The Article 22a menu: <strong>immediate superior OR Director-General OR (if useful) Secretary-General OR OLAF DIRECT — in writing</strong>. The official chooses; the hierarchy has no filter monopoly. The Ombudsman and Presidents belong to <strong>Article 22b</strong>, the external second stage."},
+    {q:"The protection of Article 22a(3) covers a whistleblowing official provided that he:",
+     opts:["Acted reasonably and honestly.",
+           "Acted honestly.",
+           "Acted in good faith and in the interests of the service.",
+           "Is proved right by the subsequent OLAF investigation."],
+     exp:"Article 22a: <strong>'reasonably AND honestly'</strong> — both words. The harassment-witness clause of Article 12a requires only 'honestly'. Being ultimately wrong does not remove protection; acting unreasonably does. This one-word pair is prime hard-mode territory."},
+    {q:"Under Article 22b, an official who discloses Article 22a information to the President of the Commission, of the Court of Auditors, of the Council or of the Parliament, or to the European Ombudsman, is protected provided that:",
+     opts:["He honestly and reasonably believes the information to be substantially true AND he has previously disclosed it to OLAF or his institution and allowed them the period set to take action.",
+           "He honestly and reasonably believes the information to be substantially true OR he has previously disclosed it to OLAF or his institution.",
+           "He has previously disclosed the information to the Court of Justice and waited 60 days.",
+           "He discloses it simultaneously to OLAF and to the press."],
+     exp:"<strong>BOTH conditions cumulatively</strong> — belief in substantial truth <strong>AND</strong> prior internal/OLAF disclosure with time allowed. The official must be told the length of that period <strong>within 60 days</strong>; the waiting requirement falls away if he can show it is <strong>unreasonable</strong> in the circumstances. The press is never in the list."},
+    {q:"Article 22a expressly does NOT apply to:",
+     opts:["Documents, deeds, reports, notes or information held for the purposes of, or created or disclosed in the course of, legal proceedings, whether pending or closed.",
+           "Information concerning Members of an institution rather than officials.",
+           "Facts learned from colleagues rather than documents.",
+           "Conduct which constitutes a failure to comply with the obligations of officials."],
+     exp:"The legal-proceedings carve-out (identical in Article 22b) is the exception. The opposite of option b) is true: 22a extends to serious failures by <strong>Members of an institution</strong> or anyone working for it. And any official <strong>receiving</strong> such information must transmit the evidence to OLAF without delay."},
+    {q:"Under Article 22c, each institution shall put in place a procedure for handling complaints by officials about how they were treated after fulfilling their obligations under Articles 22a or 22b. That procedure must ensure that complaints are handled:",
+     opts:["Confidentially and, where warranted by the circumstances, before the expiry of the deadlines set out in Article 90.",
+           "Publicly, to guarantee the transparency of the institution.",
+           "By OLAF, acting as an independent appeal body.",
+           "Within 30 working days, failing which the complaint is deemed accepted."],
+     exp:"Article 22c (a 2014 addition): complaints handled <strong>confidentially</strong> and where warranted <strong>faster than the Article 90 deadlines</strong>; internal rules must cover information for the whistleblower, protection of his legitimate interests and privacy, and the complaints procedure itself."}
+  ]},
+
+/* ==================== MODULE 6: RIGHTS & THE PERSONAL FILE ==================== */
+{ id:"m6", n:"6", name:"Rights, assistance & the personal file", blurb:"Art 23–26a · the laissez-passer grades · what the file may never contain",
+  cards:[
+    {q:"Under Article 23, the laissez-passer provided for in the Protocol on Privileges and Immunities is issued to:",
+     opts:["Heads of unit, officials in grades AD12 to AD16, officials serving outside the territory of the European Union, and other officials for whom it is required in the interest of the service.",
+           "All officials in the AD function group.",
+           "Heads of unit, officials in grades AD9 to AD16, and officials serving in delegations.",
+           "Only Directors-General and Deputy Directors-General."],
+     exp:"Four categories: <strong>heads of unit · AD12–AD16 · officials serving OUTSIDE EU territory · others where the interest of the service requires</strong>. The grade band AD12 (not AD9) is the memorised detail. Privileges are accorded <strong>solely in the interests of the Union</strong>, and officials remain bound by private obligations, laws and police regulations."},
+    {q:"Under Article 24, the Union shall compensate an official for damage suffered from threats, insults or attacks by reason of his position or duties:",
+     opts:["Jointly and severally, in so far as the official did not cause the damage intentionally or through grave negligence and has been unable to obtain compensation from the person who caused it.",
+           "In all cases, irrespective of the official's own conduct.",
+           "Only where the damage was caused by another official of the same institution.",
+           "Up to a ceiling laid down annually by the budgetary authority."],
+     exp:"The duty of assistance covers proceedings against perpetrators of <strong>threats, insulting or defamatory acts, or attacks on person or property</strong> — extending to the official's <strong>family</strong>. Compensation is <strong>joint and several</strong>, but subsidiary: no intent or <strong>grave negligence</strong> by the official, and no recovery obtainable from the actual wrongdoer."},
+    {q:"Which statement about further training under Article 24a is correct?",
+     opts:["The Union shall facilitate training compatible with the proper functioning of the service and its own interests, and such training shall be taken into account for promotion.",
+           "Officials are entitled to 10 days of training per year, counted as special leave.",
+           "Training is facilitated only where it is directly necessary for the official's current post.",
+           "Training is a private matter and has no bearing on career progression."],
+     exp:"Two limbs: facilitation subject to <strong>service compatibility and the Union's own interests</strong>, and the express link to <strong>promotion</strong>. No day-quota exists in Article 24a. Next door, Article 24b guarantees the <strong>right of association</strong> — membership of trade unions and staff associations."},
+    {q:"Under Article 25, a decision adversely affecting an official must:",
+     opts:["Be communicated to him in writing at once and state the grounds on which it is based.",
+           "Be communicated to him in writing within 30 working days and be published in the institution.",
+           "Be notified by registered letter and confirmed by the Joint Committee.",
+           "State the grounds on which it is based only if the official so requests."],
+     exp:"Individual decisions: <strong>written communication AT ONCE</strong>; adverse decisions: <strong>grounds stated</strong>, automatically. Publication concerns a different category — <strong>appointment, establishment, promotion, transfer, administrative status and termination</strong> are published in the institution, accessible to all staff for an appropriate period."},
+    {q:"Under Article 26, documents concerning an official's administrative status and reports on his ability, efficiency and conduct:",
+     opts:["May not be used or cited by the institution against the official unless they were communicated to him before they were filed.",
+           "May be used against the official provided he is informed at the latest at the hearing.",
+           "May be used against the official once they have been registered and numbered.",
+           "May never be used against the official in any proceedings."],
+     exp:"The guarantee is <strong>communication BEFORE filing</strong> — otherwise the document is unusable against the official. Communication is evidenced by <strong>signature</strong> or effected by <strong>registered letter to the last address communicated</strong>. The official may also add his own comments to any such document."},
+    {q:"The personal file of an official shall contain no reference to:",
+     opts:["His political, trade union, philosophical or religious activities and views, or to his racial or ethnic origin or sexual orientation.",
+           "His political activities and views, save where they gave rise to disciplinary proceedings.",
+           "His medical history, disciplinary record or performance appraisals.",
+           "Any information predating his appointment."],
+     exp:"The prohibited list: <strong>political, trade union, philosophical, religious activities/views + racial or ethnic origin + sexual orientation</strong> — with one nuance: administrative acts <strong>known to the official</strong> and necessary to apply the Staff Regulations may still be filed. Appraisals belong IN the file; medical data sit in the separate <strong>medical file</strong> (Art 26a)."},
+    {q:"Which statement about the personal file is correct?",
+     opts:["There is only one personal file per official; it is confidential, may be consulted only in the administration's offices or on a secure electronic medium, and the official may consult it and take copies even after leaving the service.",
+           "There may be one file per institution served; each is confidential and destroyed when the official leaves the service.",
+           "The file is public within the institution, but consultation is logged.",
+           "The official may consult his file only in the presence of a member of the Appointing Authority."],
+     exp:"<strong>ONE file · confidential · consulted only in the administration's offices or on a secure electronic medium · lifetime right of access WITH copies, even after leaving</strong>. It is forwarded to the <strong>Court of Justice</strong> if an action concerning the official is brought. Article 26a adds the right to see one's <strong>medical file</strong> under arrangements laid down by the appointing authorities."},
+    {q:"Under Article 24b, officials' right of association means in particular that they:",
+     opts:["May be members of trade unions or staff associations of European officials.",
+           "May form political parties within the institutions.",
+           "May engage in collective bargaining that binds the appointing authority.",
+           "May strike, subject to a minimum-service requirement."],
+     exp:"Article 24b is short and specific: <strong>right of association — in particular membership of trade unions or staff associations of European officials</strong>. Strikes, binding collective bargaining and internal political parties are not in the text."}
+  ]}
+
+];
+
+/* give every question a stable id */
+MODULES.forEach(m => m.cards.forEach((c,i)=> c.id = m.id+"_"+i));
+
+/* ============================ STORAGE ============================ */
+const STORE_KEY = "staffreg_title2_mcq_v1";
+const memStore = {};
+async function loadProgress(){
+  try{
+    const s = localStorage.getItem(STORE_KEY);
+    return s ? JSON.parse(s) : {};
+  }catch(e){
+    return memStore[STORE_KEY] ? JSON.parse(memStore[STORE_KEY]) : {};
+  }
+}
+async function saveProgress(obj){
+  const s = JSON.stringify(obj);
+  memStore[STORE_KEY] = s;
+  try{ localStorage.setItem(STORE_KEY, s); }catch(e){/* in-memory only */}
+}
+
+let progress = {};
+function isKnown(id){ return progress[id] === "known"; }
+function moduleKnown(m){ return m.cards.filter(c=>isKnown(c.id)).length; }
+
+/* ============================ STAR RING ============================ */
+function buildRing(elm, lit, total, size){
+  total = total || 12; size = size || 54;
+  const r = size/2 - size*0.13;
+  const fs = size*0.17;
+  elm.innerHTML = "";
+  elm.classList.add("ring");
+  elm.style.width = size+"px"; elm.style.height = size+"px";
+  for(let i=0;i<total;i++){
+    const ang = i*(360/total);
+    const s = document.createElement("span");
+    s.className = "star" + (i<lit ? " lit":"");
+    s.textContent = "★";
+    s.style.fontSize = fs+"px";
+    s.style.transform = "translate(-50%,-50%) rotate("+ang+"deg) translateY("+(-r)+"px) rotate("+(-ang)+"deg)";
+    elm.appendChild(s);
+  }
+  const c = document.createElement("div");
+  c.className = "center";
+  c.style.fontSize = (size*0.22)+"px";
+  c.textContent = Math.round((lit/total)*100)+"%";
+  elm.appendChild(c);
+}
+function ringLit(known, total){ return total===0?0:Math.round((known/total)*12); }
+
+/* ============================ HOME ============================ */
+const el = id => document.getElementById(id);
+
+function renderHome(){
+  const totalCards = MODULES.reduce((a,m)=>a+m.cards.length,0);
+  const knownCards = MODULES.reduce((a,m)=>a+moduleKnown(m),0);
+  el("globalTally").textContent = knownCards+" / "+totalCards+" mastered";
+  buildRing(el("mastRing"), ringLit(knownCards,totalCards), 12, 52);
+
+  const list = el("modList");
+  list.innerHTML = "";
+  MODULES.forEach(m=>{
+    const known = moduleKnown(m), tot = m.cards.length;
+    const pct = tot? known/tot : 0;
+    const b = document.createElement("button");
+    b.className = "mod";
+    b.innerHTML =
+      '<span class="num">'+m.n+'</span>'+
+      '<span class="body">'+
+        '<p class="title">'+m.name+'</p>'+
+        '<p class="blurb">'+m.blurb+'</p>'+
+        '<span class="barwrap"><span class="bar '+(pct>=1?'done':'')+'" style="width:'+Math.round(pct*100)+'%"></span></span>'+
+      '</span>'+
+      '<span class="ring-wrap"></span>';
+    b.addEventListener("click", ()=> openDeck(m));
+    list.appendChild(b);
+    buildRing(b.querySelector(".ring-wrap"), ringLit(known,tot), 12, 46);
+  });
+}
+
+/* ============================ STUDY ============================ */
+let curMod=null, order=[], idx=0, missesOnly=false, reviewAll=false;
+let answered=false, sessRight=0, sessTotal=0;
+const LETTERS = ["a","b","c","d"];
+
+function buildOrder(){
+  let cards;
+  if(reviewAll){
+    cards = [];
+    MODULES.forEach(m=> m.cards.forEach(c=> cards.push(Object.assign({_mod:m},c))));
+  } else {
+    cards = curMod.cards.map(c=> Object.assign({_mod:curMod},c));
+  }
+  if(missesOnly) cards = cards.filter(c=> !isKnown(c.id));
+  return cards;
+}
+
+function openDeck(m, all){
+  reviewAll = !!all;
+  curMod = m || null;
+  missesOnly = false;
+  sessRight = 0; sessTotal = 0;
+  el("missesToggle").classList.remove("on");
+  order = buildOrder();
+  idx = 0;
+  el("home").classList.add("hidden");
+  el("study").classList.add("active");
+  const title = reviewAll ? "Full mock" : m.name;
+  const sub = reviewAll ? "All questions from the 6 modules, shuffled" : "Module "+m.n;
+  el("deckName").firstChild.nodeValue = title;
+  el("deckSub").textContent = sub;
+  if(reviewAll) shuffleOrder();
+  renderCard();
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+
+function closeDeck(){
+  el("study").classList.remove("active");
+  el("home").classList.remove("hidden");
+  renderHome();
+}
+
+function renderCard(){
+  answered = false;
+  el("explain").classList.remove("show","good","bad");
+  el("doneBanner").classList.remove("show");
+  el("qcard").style.display = "";
+  el("nextBtn").style.visibility = "hidden";
+  el("sessScore").textContent = sessTotal>0 ? ("Session: "+sessRight+"/"+sessTotal) : "";
+
+  if(order.length === 0){
+    el("qcard").style.display = "none";
+    el("cardPos").textContent = "0";
+    el("cardTotal").textContent = "0";
+    el("doneBanner").classList.add("show");
+    const known = curMod? moduleKnown(curMod): MODULES.reduce((a,m)=>a+moduleKnown(m),0);
+    const tot = curMod? curMod.cards.length : MODULES.reduce((a,m)=>a+m.cards.length,0);
+    buildRing(el("doneRing"), ringLit(known,tot), 12, 58);
+    updateDeckRing();
+    return;
+  }
+
+  if(idx>=order.length) idx = order.length-1;
+  const c = order[idx];
+  el("frontTag").textContent = c._mod ? c._mod.name : "Module";
+  el("qText").innerHTML = c.q;
+  el("cardPos").textContent = (idx+1);
+  el("cardTotal").textContent = order.length;
+  el("prevBtn").disabled = idx===0;
+
+  /* shuffle options; original index 0 is correct */
+  const perm = [0,1,2,3].slice(0, c.opts.length);
+  for(let i=perm.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    const t=perm[i]; perm[i]=perm[j]; perm[j]=t;
+  }
+  const optsBox = el("opts");
+  optsBox.innerHTML = "";
+  perm.forEach((origIdx, pos)=>{
+    const b = document.createElement("button");
+    b.className = "opt";
+    b.dataset.orig = origIdx;
+    b.innerHTML = '<span class="letter">'+LETTERS[pos]+'</span><span>'+c.opts[origIdx]+'</span>';
+    b.addEventListener("click", ()=> answer(b, origIdx===0));
+    optsBox.appendChild(b);
+  });
+
+  updateDeckRing();
+}
+
+async function answer(btn, correct){
+  if(answered) return;
+  answered = true;
+  sessTotal++;
+  const c = order[idx];
+
+  const buttons = Array.from(el("opts").children);
+  buttons.forEach(b=>{
+    b.disabled = true;
+    const isCorrect = b.dataset.orig === "0";
+    if(isCorrect) b.classList.add("correct");
+    else if(b===btn) b.classList.add("wrong");
+    else b.classList.add("dim");
+  });
+
+  const exp = el("explain");
+  if(correct){
+    sessRight++;
+    progress[c.id] = "known";
+    exp.classList.add("good");
+    el("verdictHead").textContent = "Correct — mastered";
+  } else {
+    delete progress[c.id];
+    exp.classList.add("bad");
+    el("verdictHead").textContent = "Not quite — kept in your review pool";
+  }
+  el("expText").innerHTML = c.exp;
+  exp.classList.add("show");
+  el("sessScore").textContent = "Session: "+sessRight+"/"+sessTotal;
+  el("nextBtn").style.visibility = "visible";
+  await saveProgress(progress);
+  updateDeckRing();
+}
+
+function next(){
+  if(!answered && order.length>0) return;
+  if(idx < order.length-1){ idx++; renderCard(); }
+  else {
+    if(missesOnly){ order = buildOrder(); idx = 0; renderCard(); }
+    else checkComplete();
+  }
+}
+
+function checkComplete(){
+  const allKnown = order.length>0 && order.every(c=> isKnown(c.id));
+  if(allKnown){
+    el("qcard").style.display="none";
+    el("nextBtn").style.visibility="hidden";
+    el("doneBanner").classList.add("show");
+    const known = curMod? moduleKnown(curMod): MODULES.reduce((a,m)=>a+moduleKnown(m),0);
+    const tot = curMod? curMod.cards.length : MODULES.reduce((a,m)=>a+m.cards.length,0);
+    buildRing(el("doneRing"), ringLit(known,tot), 12, 58);
+  } else {
+    /* re-run the ones still missed */
+    order = order.filter(c=> !isKnown(c.id));
+    idx = 0; renderCard();
+  }
+}
+
+function updateDeckRing(){
+  if(reviewAll){
+    const known = MODULES.reduce((a,m)=>a+moduleKnown(m),0);
+    const tot = MODULES.reduce((a,m)=>a+m.cards.length,0);
+    buildRing(el("deckRing"), ringLit(known,tot), 12, 46);
+  } else if(curMod){
+    buildRing(el("deckRing"), ringLit(moduleKnown(curMod), curMod.cards.length), 12, 46);
+  }
+}
+
+function shuffleOrder(){
+  for(let i=order.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    const t=order[i]; order[i]=order[j]; order[j]=t;
+  }
+  idx=0;
+}
+
+/* ============================ EVENTS ============================ */
+el("nextBtn").addEventListener("click", next);
+el("prevBtn").addEventListener("click", ()=>{ if(idx>0){idx--;renderCard();} });
+el("shuffleBtn").addEventListener("click", ()=>{ shuffleOrder(); renderCard(); });
+el("backBtn").addEventListener("click", closeDeck);
+el("reviewAllBtn").addEventListener("click", ()=> openDeck(null, true));
+el("missesToggle").addEventListener("click", ()=>{
+  missesOnly = !missesOnly;
+  el("missesToggle").classList.toggle("on", missesOnly);
+  order = buildOrder(); idx=0; renderCard();
+});
+el("resetBtn").addEventListener("click", async ()=>{
+  if(confirm("Reset all progress? This will clear your mastered-question marks.")){
+    progress = {};
+    await saveProgress(progress);
+    renderHome();
+  }
+});
+document.addEventListener("keydown", e=>{
+  if(!el("study").classList.contains("active")) return;
+  const keys = {"1":0,"2":1,"3":2,"4":3,"a":0,"b":1,"c":2,"d":3};
+  if(!answered && (e.key in keys)){
+    const buttons = el("opts").children;
+    if(buttons[keys[e.key]]) buttons[keys[e.key]].click();
+  } else if(answered && (e.code==="Space" || e.code==="ArrowRight" || e.key==="Enter")){
+    e.preventDefault(); next();
+  } else if(e.code==="ArrowLeft" && idx>0){ idx--; renderCard(); }
+});
+
+/* ============================ INIT ============================ */
+(async function init(){
+  progress = await loadProgress();
+  renderHome();
+})();
+</script>
+</body>
+</html>
